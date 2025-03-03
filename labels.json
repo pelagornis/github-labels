@@ -1,0 +1,72 @@
+[
+  {
+    "name": "bug",
+    "color": "ff6969",
+    "description": "Something isn't working" 
+  },
+  {
+    "name": "dependencies",
+    "color": "2351f7",
+    "description": "Pull requests that update a dependency file" 
+  },
+  {
+    "name": "documentation",
+    "color": "7694ff",
+    "description": "Improvements or additions to docummentation"
+  },
+  {
+    "name": "deploy",
+    "color": "4d4d4a",
+    "description": "About deploy"
+  },
+  {
+    "name": "feature",
+    "color": "71cdd7",
+    "description": "New feature" 
+  },
+  {
+    "name": "api",
+    "color": "a9bcff",
+    "description": "New API" 
+  },
+  {
+    "name": "refactor",
+    "color": "d6aeff",
+    "description": "Code refactoring progress.." 
+  },
+  {
+    "name": "simple",
+    "color": "42949d",
+    "description": "New feature" 
+  },
+  {
+    "name": "test",
+    "color": "26b12d",
+    "description": "About Test Content" 
+  },
+  {
+    "name": "performance",
+    "color": "891cf9",
+    "description": "Improve the performance of a project" 
+  },
+  {
+    "name": "feedback",
+    "color": "b82b6b",
+    "description": "Please give me feedback on various ideas or contents about the project" 
+  },
+  {
+    "name": "question",
+    "color": "bd7bff",
+    "description": "Further information is requested" 
+  },
+  {
+    "name": "help",
+    "color": "ffcb2f",
+    "description": "Extra attention is needed"
+  },
+  {
+    "name": "setting",
+    "color": "dbdbdb",
+    "description": "Development Environment Setting" 
+  }
+]
