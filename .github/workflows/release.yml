@@ -24,4 +24,4 @@ jobs:
 
       - name: Sync labels with github-label-sync
         run: |
-          npx github-label-sync --access-token ${{ secrets.GITHUB_TOKEN }} --labels ./git-labels.json ${{ github.repository }}
+          npx github-label-sync --access-token ${{ secrets.GITHUB_TOKEN }} --labels ./labels.json ${{ github.repository }}
