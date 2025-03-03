@@ -2,13 +2,6 @@
 
 Thank you for your interest in contributing to Pelagornis! We welcome contributions of all kinds. Please read the following guidelines to ensure a smooth collaboration.
 
-## Development
-
-
-## Releasing
-
-To create a new release, use the GitHub UI at: [Pelagornis Releases](https://github.com/pelagornis/)
-
 ### Versioning
 
 Follow semantic versioning when creating tags:
