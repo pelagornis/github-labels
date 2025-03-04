@@ -1,0 +1,24 @@
+name: Apply Labels to Org Repos
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
+jobs:
+  update-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install GitHub CLI
+        run: sudo apt update && sudo apt install -y gh jq
+
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh auth login --with-token <<< "$GH_TOKEN"
+
+      - name: Apply Labels
+        run: bash script/apply-labels.sh
