@@ -17,27 +17,30 @@ if ! jq empty "$LABELS_FILE" > /dev/null 2>&1; then
   exit 1
 fi
 
-LABELS=$(jq -c '.[]' "$LABELS_FILE")
-
-REPOS=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              "$API_URL/orgs/$ORG_NAME/repos?per_page=100" | jq -r '.[].name')
+LABELS=$(cat labels.json)
 
 for REPO in $REPOS; do
-  echo "Syncing labels for repository: $REPO"
-  
-  for LABEL in $LABELS; do
-    LABEL_NAME=$(echo $LABEL | jq -r '.name')
-    LABEL_COLOR=$(echo $LABEL | jq -r '.color')
-    LABEL_DESC=$(echo $LABEL | jq -r '.description')
-    
-    echo "Adding label '$LABEL_NAME' to repository: $REPO"
-    
-    curl -X POST -H "Authorization: Bearer $GH_TOKEN" \
-         -H "Accept: application/vnd.github+json" \
-         -d "{\"name\": \"$LABEL_NAME\", \"color\": \"$LABEL_COLOR\", \"description\": \"$LABEL_DESC\"}" \
-         "$API_URL/repos/$ORG_NAME/$REPO/labels"
-  done
+  echo "🚀 Processing repository: $REPO"
 
-  echo "Labels synchronized for $REPO"
+  echo "$LABELS" | jq -c '.[]' | while read -r label; do
+    NAME=$(echo $label | jq -r '.name')
+    COLOR=$(echo $label | jq -r '.color')
+    DESCRIPTION=$(echo $label | jq -r '.description')
+
+    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+      -X POST "$API_URL/repos/$ORG_NAME/$REPO/labels" \
+      -H "Authorization: token $GH_TOKEN" \
+      -H "Accept: application/vnd.github+json" \
+      -d "{\"name\": \"$NAME\", \"color\": \"$COLOR\", \"description\": \"$DESCRIPTION\"}")
+
+    if [[ "$RESPONSE" == "201" ]]; then
+      echo "✅ Label '$NAME' added to $REPO"
+    elif [[ "$RESPONSE" == "422" ]]; then
+      echo "⚠️ Label '$NAME' already exists in $REPO"
+    else
+      echo "❌ Failed to add label '$NAME' to $REPO (HTTP $RESPONSE)"
+    fi
+  done
 done
+
+echo "🎉 Labels applied to all repositories!"
