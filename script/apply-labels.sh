@@ -13,7 +13,7 @@ REPOS=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
 for REPO in $REPOS; do
   echo "Syncing labels for repository: $REPO"
   
-  npx github-label-sync --access-token "$GH_TOKEN" --labels script/labels.json "$ORG_NAME"/"$REPO"
+  npx github-label-sync --access-token "$GH_TOKEN" --labels labels.json "$ORG_NAME"/"$REPO"
 
   echo "Labels synchronized for $REPO"
 done
