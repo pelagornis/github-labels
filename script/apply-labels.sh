@@ -1,25 +1,42 @@
 #!/bin/bash
 
-ORG_NAME="pelagornis"
-LABELS_FILE="labels.json"
+set -e
 
-REPOS=$(gh repo list $ORG_NAME --limit 1000 --json name --jq '.[].name')
+ORG_NAME="pelagornis"
+GH_TOKEN="${GH_TOKEN}"
+API_URL="https://api.github.com"
+
+echo "🔍 Fetching repositories for organization: $ORG_NAME..."
+REPOS=$(curl -s -H "Authorization: token $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "$API_URL/orgs/$ORG_NAME/repos?per_page=100" | jq -r '.[].name')
+
+echo "📦 Found repositories: $REPOS"
+
+LABELS=$(cat .github/labels.json)
 
 for REPO in $REPOS; do
-  echo "Processing: $REPO"
-  
-  EXISTING_LABELS=$(gh label list -R $ORG_NAME/$REPO --json name --jq '.[].name')
-  for LABEL in $EXISTING_LABELS; do
-    gh label delete "$LABEL" -R $ORG_NAME/$REPO --yes
-  done
+  echo "🚀 Processing repository: $REPO"
 
-  jq -c '.[]' $LABELS_FILE | while read -r label; do
+  echo "$LABELS" | jq -c '.[]' | while read -r label; do
     NAME=$(echo $label | jq -r '.name')
     COLOR=$(echo $label | jq -r '.color')
     DESCRIPTION=$(echo $label | jq -r '.description')
 
-    gh label create "$NAME" --color "$COLOR" --description "$DESCRIPTION" -R $ORG_NAME/$REPO || echo "Failed to create $NAME"
+    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+      -X POST "$API_URL/repos/$ORG_NAME/$REPO/labels" \
+      -H "Authorization: token $GH_TOKEN" \
+      -H "Accept: application/vnd.github+json" \
+      -d "{\"name\": \"$NAME\", \"color\": \"$COLOR\", \"description\": \"$DESCRIPTION\"}")
+
+    if [[ "$RESPONSE" == "201" ]]; then
+      echo "✅ Label '$NAME' added to $REPO"
+    elif [[ "$RESPONSE" == "422" ]]; then
+      echo "⚠️ Label '$NAME' already exists in $REPO"
+    else
+      echo "❌ Failed to add label '$NAME' to $REPO (HTTP $RESPONSE)"
+    fi
   done
 done
 
-echo "Labels applied successfully!"
+echo "🎉 Labels applied to all repositories!"
