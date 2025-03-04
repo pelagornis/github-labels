@@ -5,22 +5,19 @@ on:
     types: [published]
 
 jobs:
-  sync_labels:
+  update-labels:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+      - name: Install GitHub CLI
+        run: sudo apt update && sudo apt install -y gh jq
 
-      - name: Install dependencies
-        run: |
-          npm install -g github-label-sync
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh auth login --with-token <<< "$GH_TOKEN"
 
-      - name: Sync labels with github-label-sync
-        run: |
-          npx github-label-sync --access-token ${{ secrets.GITHUB_TOKEN }} --labels ./labels.json ${{ github.repository }}
+      - name: Apply Labels
+        run: bash script/apply-labels.sh
