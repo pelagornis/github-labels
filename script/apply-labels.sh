@@ -5,7 +5,7 @@ set -e
 ORG_NAME="pelagornis"
 GH_TOKEN="${GH_TOKEN}"
 API_URL="https://api.github.com"
-LABELS_FILE="./labels.json"
+LABELS_FILE="labels.json"
 
 if [ -z "$GH_TOKEN" ]; then
   echo "Error: GH_TOKEN is not set."
