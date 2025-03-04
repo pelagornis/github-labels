@@ -12,8 +12,9 @@ on:
 jobs:
   apply-labels:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set permissions for script
@@ -22,4 +23,4 @@ jobs:
       - name: Run apply-labels.sh
         env:
           GH_TOKEN: ${{ secrets.PELAGORNIS_PAT }}
-        run: bash script/apply-labels.sh
+        run: script/apply-labels.sh
