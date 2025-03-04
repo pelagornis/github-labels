@@ -16,19 +16,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: |
-          npm install -g github-label-sync
-
       - name: Set permissions for script
         run: chmod +x script/apply-labels.sh
 
       - name: Run apply-labels.sh
         env:
           GH_TOKEN: ${{ secrets.PELAGORNIS_PAT }}
-        run: script/apply-labels.sh
+        run: bash script/apply-labels.sh
