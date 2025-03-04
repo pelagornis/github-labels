@@ -13,7 +13,7 @@ REPOS=$(curl -s -H "Authorization: token $GH_TOKEN" \
 
 echo "📦 Found repositories: $REPOS"
 
-LABELS=$(cat .github/labels.json)
+LABELS=$(cat labels.json)
 
 for REPO in $REPOS; do
   echo "🚀 Processing repository: $REPO"
