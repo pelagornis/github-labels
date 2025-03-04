@@ -22,5 +22,5 @@ jobs:
 
       - name: Run apply-labels.sh
         env:
-          GH_TOKEN: ${{ secrets.PELAGORNIS_PAT }}
+          GH_TOKEN: ${{ secrets.PELAGORNIS }}
         run: script/apply-labels.sh
