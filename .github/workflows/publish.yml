@@ -1,5 +1,6 @@
 name: Apply Labels to All Repositories
 
+
 on:
   push:
     branches:
