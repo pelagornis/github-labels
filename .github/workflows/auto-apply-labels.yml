@@ -1,8 +1,8 @@
 name: Apply Labels to New Repository
 
 on:
-  repository_dispatch:
-    types: [new-repository]
+  repository:
+    types: [created]
 
 jobs:
   apply-labels:
@@ -22,5 +22,5 @@ jobs:
           ORG_NAME: "pelagornis"
           REPO_NAME: ${{ github.event.client_payload.repository }}
         run: |
-          chmod +x .github/scripts/apply_labels.sh
-          .github/scripts/apply_labels.sh "$REPO_NAME"
+          chmod +x .github/scripts/apply-labels.sh
+          .github/scripts/apply-labels.sh "$REPO_NAME"
