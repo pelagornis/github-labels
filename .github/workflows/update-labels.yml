@@ -14,6 +14,6 @@ jobs:
 
     - name: Apply Labels to All Repositories
       env:
-        GITHUB_TOKEN: ${{ secrets.PELAGORNIS }}  # PAT Token
+        GH_TOKEN: ${{ secrets.PELAGORNIS }}  # PAT Token
       run: |
         .github/scripts/update-all-labels.sh
