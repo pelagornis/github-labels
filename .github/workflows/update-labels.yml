@@ -1,0 +1,19 @@
+name: Update Labels to All Repositories
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  apply_labels:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Apply Labels to All Repositories
+      env:
+        GITHUB_TOKEN: ${{ secrets.PELAGORNIS }}  # PAT Token
+      run: |
+        .github/scripts/update-all-labels.sh
