@@ -1,8 +1,7 @@
 name: Apply Labels to New Repository
 
 on:
-  repository_dispatch:
-    types: [new-repository]
+  create
 
 jobs:
   apply-labels:
