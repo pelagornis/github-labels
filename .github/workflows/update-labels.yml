@@ -16,4 +16,5 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.PELAGORNIS }}  # PAT Token
       run: |
+        chmod +x .github/scripts/update-all-labels.sh
         .github/scripts/update-all-labels.sh
